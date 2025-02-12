@@ -4,7 +4,8 @@ public class PoolItems : Pool
 {
     private void Awake()
     {
-        Init();
+        if(IsValidate<MedicineKit>())
+            Init();
     }
 
     public override GameObject Get()

@@ -4,7 +4,8 @@ public class PoolProjectile : Pool
 {
     private void Awake()
     {
-        Init();
+        if (IsValidate<Projectile>())
+            Init();
     }
 
     public override GameObject Get()

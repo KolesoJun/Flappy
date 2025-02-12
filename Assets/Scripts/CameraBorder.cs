@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraBorder : MonoBehaviour
@@ -14,7 +12,7 @@ public class CameraBorder : MonoBehaviour
 
     private float _errorRate = 0.5f;
 
-    void Start()
+    private void Start()
     {
         if (_mainCamera == null)
             _mainCamera = Camera.main;
@@ -22,12 +20,12 @@ public class CameraBorder : MonoBehaviour
         CalculateCameraBounds();
     }
 
-    void Update()
+    private void Update()
     {
         RestrictPlayerPosition();
     }
 
-    void CalculateCameraBounds()
+    private void CalculateCameraBounds()
     {
         float orthographicSize = _mainCamera.orthographicSize;
         float aspect = _mainCamera.aspect;
@@ -38,7 +36,7 @@ public class CameraBorder : MonoBehaviour
         _maxY = _mainCamera.transform.position.y + orthographicSize - _errorRate;
     }
 
-    void RestrictPlayerPosition()
+    private void RestrictPlayerPosition()
     {
         Vector3 position = _player.transform.position;
 

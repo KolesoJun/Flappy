@@ -50,6 +50,7 @@ public class Gun : MonoBehaviour
         while (_isWork)
         {
             Shot();
+
             yield return wait;
         }
     }

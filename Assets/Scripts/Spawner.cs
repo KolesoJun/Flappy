@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class Spawner: MonoBehaviour
 {
     [SerializeField] private Pool _pool;
     [SerializeField] private float _timeSpawnMin = 3f;

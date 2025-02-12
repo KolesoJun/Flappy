@@ -4,16 +4,17 @@ public class PoolEnemys: Pool
 {
     private void Awake()
     {
-        Init();
+        if(IsValidate<Enemy>())
+            Init();
     }
 
     public override GameObject Get()
     {
         Replenish();
-        GameObject objectPool = ObjectsInPool.Pop();
-        objectPool.gameObject.SetActive(true);
-        objectPool.GetComponent<Enemy>().ConnectPool(this);
+        Enemy enemy = ObjectsInPool.Pop().GetComponent<Enemy>();
+        enemy.gameObject.SetActive(true);
+        enemy.ConnectPool(this);
 
-        return objectPool;
+        return enemy.gameObject;
     }
 }

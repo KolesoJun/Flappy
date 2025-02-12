@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Pool : MonoBehaviour
+public abstract class Pool: MonoBehaviour
 {
     [SerializeField] protected int CountObjects = 10;
     [SerializeField] protected GameObject[] Prefabs;
@@ -19,7 +19,7 @@ public abstract class Pool : MonoBehaviour
     protected void Replenish()
     {
         if (ObjectsInPool.Count == 0)
-            Create();
+            Expend();
     }
 
     protected void Init()
@@ -27,10 +27,21 @@ public abstract class Pool : MonoBehaviour
         ObjectsInPool = new Stack<GameObject>();
 
         for (int i = 0; i < CountObjects; i++)
-            Create();
+            Expend();
     }
 
-    private void Create()
+    protected bool IsValidate <T>()
+    {
+        bool isTrue = false;
+
+        for (int i = 0; i < Prefabs.Length; i++)
+            if (Prefabs[i].TryGetComponent<T>(out _))
+                isTrue = true;
+
+        return isTrue;
+    }
+
+    private void Expend()
     {
         GameObject objectPool = Instantiate(Prefabs[Random.Range(0, Prefabs.Length)]);
         ObjectsInPool.Push(objectPool);

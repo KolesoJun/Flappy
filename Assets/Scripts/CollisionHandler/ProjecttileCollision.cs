@@ -14,6 +14,7 @@ public class ProjecttileCollision : MonoBehaviour
         if (collision.TryGetComponent(out Enemy enemy))
         {
             enemy.TakeDamage();
+            ScoreCounter.Instance.Add();
         }
 
         _projectile.Stop();

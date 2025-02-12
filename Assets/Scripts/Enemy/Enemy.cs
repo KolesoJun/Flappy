@@ -10,8 +10,6 @@ public class Enemy : MonoBehaviour, IPoolConnector
     public event Action Started;
     public event Action Released;
 
-    [field: SerializeField] public Gun Gun { get; private set; }
-
     private void Start()
     {
         StartCoroutine(DelayBeforeAttack());
@@ -20,6 +18,7 @@ public class Enemy : MonoBehaviour, IPoolConnector
     private IEnumerator DelayBeforeAttack()
     {
         yield return new WaitForSeconds(_delay);
+
         Started?.Invoke();
     }
 

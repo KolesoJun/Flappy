@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInteract))]
@@ -8,9 +7,8 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerMoverBroken _moverBroken;
     [SerializeField] private Rigidbody2D _rigidbody;
 
-    [field: SerializeField] public Gun Gun { get; private set; }
     public bool IsBroken { get; private set; }
-
+    
     private PlayerInteract _interact;
 
     private void Awake()
