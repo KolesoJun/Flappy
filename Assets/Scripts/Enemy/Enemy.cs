@@ -2,10 +2,14 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IPoolConnector
+public class Enemy : MonoBehaviour
 {
-    private Pool _pool;
+    [SerializeField] private Gun _gun;
+
+    private SpawnerEnemis _spawnerEnemis;
+    private EnemyHandler _enemyHandler;
     private float _delay = 0.5f;
+    private float _direction = -1f;
 
     public event Action Started;
     public event Action Released;
@@ -15,31 +19,35 @@ public class Enemy : MonoBehaviour, IPoolConnector
         StartCoroutine(DelayBeforeAttack());
     }
 
-    private IEnumerator DelayBeforeAttack()
-    {
-        yield return new WaitForSeconds(_delay);
-
-        Started?.Invoke();
-    }
-
     public void ActivateShoot()
     {
         Started?.Invoke();
+        _gun.StartFireBurst(transform.right * _direction);
     }
 
     public void TakeDamage()
     {
+        _enemyHandler.TransmitCounter();
         Release();
     }
 
     public void Release()
     {
         Released?.Invoke();
-        _pool.Release(gameObject);
+        _gun.StopShoot();
+        _spawnerEnemis.ReleaseInPool(this);
     }
 
-    public void ConnectPool(Pool pool)
+    public void Init( SpawnerEnemis spawner, EnemyHandler enemyHandler)
     {
-        _pool = pool;
+        _spawnerEnemis = spawner;
+        _enemyHandler = enemyHandler;
+    }
+
+    private IEnumerator DelayBeforeAttack()
+    {
+        yield return new WaitForSeconds(_delay);
+
+        Started?.Invoke();
     }
 }

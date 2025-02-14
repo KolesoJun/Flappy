@@ -9,9 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6629618874752597766}
-  - component: {fileID: 5925970827963529476}
   - component: {fileID: 8312006847727029522}
-  - component: {fileID: 7768672992460928751}
   m_Layer: 6
   m_Name: Gun
   m_TagString: Untagged
@@ -34,19 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6314663067760970006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5925970827963529476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113520119770980907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6c9c13f99aae8a40bf42aaecd2bb41c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemy: {fileID: 2636014503303450564}
 --- !u!114 &8312006847727029522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,24 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97798cd719e70f443ba7adcd1cb86405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _direction: {x: -1, y: 0}
-  _pool: {fileID: 7768672992460928751}
-  _carrier: {fileID: 5925970827963529476}
---- !u!114 &7768672992460928751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113520119770980907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 527011ed4078c36429074d897af2292c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CountObjects: 10
-  Prefabs:
-  - {fileID: 4360707649074450667, guid: 8f525d6c48d3a9d46b3aa9ff13b7977d, type: 3}
+  _prefab: {fileID: 5244122598718281275, guid: 8f525d6c48d3a9d46b3aa9ff13b7977d, type: 3}
+  _speedAttact: 1
 --- !u!1 &5291543514086324242
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37206e54f370e6e4e9d1d52be0b83c84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gun: {fileID: 8312006847727029522}
 --- !u!61 &4711345342417930658
 BoxCollider2D:
   m_ObjectHideFlags: 0

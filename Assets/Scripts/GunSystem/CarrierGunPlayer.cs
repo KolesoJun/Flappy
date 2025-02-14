@@ -1,15 +1,11 @@
-using System;
 using UnityEngine;
 
-public class CarrierPlayer : CarrierGun
+public class CarrierGunPlayer : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private Gun _gun;
 
     private bool _isWorkBurst;
-
-    public override event Action FiredSingle;
-    public override event Action FiredBurst;
-    public override event Action StopedFire;
 
     private void OnEnable()
     {
@@ -26,7 +22,7 @@ public class CarrierPlayer : CarrierGun
     private void Shot()
     {
         if (_isWorkBurst == false)
-            FiredSingle?.Invoke();
+            _gun.Shot(transform.right);
     }
 
     private void ShotBurst()
@@ -34,12 +30,12 @@ public class CarrierPlayer : CarrierGun
         if (_isWorkBurst)
         {
             _isWorkBurst = false;
-            StopedFire?.Invoke();
+            _gun.StopShoot();
         }
         else
         {
             _isWorkBurst = true;
-            FiredBurst?.Invoke();
+            _gun.StartFireBurst(transform.right);
         }
     }
 }

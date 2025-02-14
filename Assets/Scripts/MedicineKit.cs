@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class MedicineKit : MonoBehaviour, IPoolConnector
+public class MedicineKit : Item
 {
-    private Pool _pool;
+    private SpawnerItems _spawner;
 
-    public void ConnectPool(Pool pool)
+    public override void Init(SpawnerItems spawner)
     {
-        _pool = pool;
+        _spawner = spawner;
     }
 
     public void Selection()
     {
-        _pool.Release(gameObject);
+        _spawner.ReleaseInPool(this);
     }
 }

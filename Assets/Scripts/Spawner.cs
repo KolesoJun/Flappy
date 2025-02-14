@@ -1,41 +1,41 @@
 using System.Collections;
 using UnityEngine;
 
-public class Spawner: MonoBehaviour
+public abstract class Spawner<T>: MonoBehaviour where T: MonoBehaviour
 {
-    [SerializeField] private Pool _pool;
-    [SerializeField] private float _timeSpawnMin = 3f;
-    [SerializeField] private float _timeSpawnMax = 6f;
-    [SerializeField] private Vector2 _positionMin;
-    [SerializeField] private Vector2 _positionMax;
+    [SerializeField] protected float TimeSpawnMin = 3f;
+    [SerializeField] protected float TimeSpawnMax = 6f;
+    [SerializeField] protected Vector2 PositionMin;
+    [SerializeField] protected Vector2 PositionMax;
 
-    private Coroutine _coroutine;
-    private bool _canWork = true;
+    protected Coroutine CoroutineSpawner;
+    protected bool CanWork = true;
 
-    private void Start()
+    public abstract void ReleaseInPool(T objectPool);
+
+    protected abstract void Init();
+    protected abstract void InitOject(T objectPool);
+
+    protected void Activate(Pool<T> pool)
     {
-        Activate();
+        if (CoroutineSpawner != null)
+            StopCoroutine(Work(pool));
+
+        CoroutineSpawner = StartCoroutine(Work(pool));
     }
 
-    private void Activate()
+    private IEnumerator Work(Pool<T> pool)
     {
-        if (_coroutine != null)
-            StopCoroutine(Work());
-
-        _coroutine = StartCoroutine(Work());
-    }
-
-    private IEnumerator Work()
-    {
-        while (_canWork)
+        while (CanWork)
         {
-            GameObject objectPool = _pool.Get();
+            T objectPool = pool.Get();
 
             if (objectPool != null)
             {
-                objectPool.transform.position = new Vector2(Random.Range(_positionMin.x, _positionMax.x), Random.Range(_positionMin.y, _positionMax.y));
+                InitOject(objectPool);
+                objectPool.transform.position = new Vector2(Random.Range(PositionMin.x, PositionMax.x), Random.Range(PositionMin.y, PositionMax.y));
 
-                yield return new WaitForSeconds(Random.Range(_timeSpawnMin, _timeSpawnMax));
+                yield return new WaitForSeconds(Random.Range(TimeSpawnMin, TimeSpawnMax));
             }
         }
     }

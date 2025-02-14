@@ -1,50 +1,53 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-public abstract class Pool: MonoBehaviour
+public class Pool<T> where T: MonoBehaviour
 {
-    [SerializeField] protected int CountObjects = 10;
-    [SerializeField] protected GameObject[] Prefabs;
+    private Stack<T> _objectsInPool;
+    private int _countObjects = 10;
+    private T _prefab;
 
-    protected Stack<GameObject> ObjectsInPool;
+    public int CountObjects => _countObjects;
 
-    public abstract GameObject Get();
-
-    public void Release(GameObject objectPool)
+    public Pool(T objectPool)
     {
-        ObjectsInPool.Push(objectPool);
+        Init(objectPool);
+    }
+
+    public T Get() 
+    {
+        Replenish();
+        T objectPool = _objectsInPool.Pop();
+        objectPool.gameObject.SetActive(true);
+        
+        return objectPool;
+    }
+
+    public void Release(T objectPool)
+    {
+        _objectsInPool.Push(objectPool);
         objectPool.gameObject.SetActive(false);
     }
 
-    protected void Replenish()
+    private void Init(T prefab)
     {
-        if (ObjectsInPool.Count == 0)
-            Expend();
-    }
-
-    protected void Init()
-    {
-        ObjectsInPool = new Stack<GameObject>();
+        _objectsInPool = new Stack<T>();
+        _prefab = prefab;
 
         for (int i = 0; i < CountObjects; i++)
             Expend();
     }
 
-    protected bool IsValidate <T>()
+    private void Replenish()
     {
-        bool isTrue = false;
-
-        for (int i = 0; i < Prefabs.Length; i++)
-            if (Prefabs[i].TryGetComponent<T>(out _))
-                isTrue = true;
-
-        return isTrue;
+        if (_objectsInPool.Count == 0)
+            Expend();
     }
 
     private void Expend()
     {
-        GameObject objectPool = Instantiate(Prefabs[Random.Range(0, Prefabs.Length)]);
-        ObjectsInPool.Push(objectPool);
-        objectPool.gameObject.SetActive(false);
+        T objectClone = MonoBehaviour.Instantiate(_prefab);
+        _objectsInPool.Push(objectClone);
+        objectClone.gameObject.SetActive(false);
     }
 }

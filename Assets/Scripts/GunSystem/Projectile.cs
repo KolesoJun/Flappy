@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour, IPoolConnector
+public class Projectile : MonoBehaviour
 {
-    [field: SerializeField] public float Caliber { get; private set; }
+    private Gun _gunParrent;
 
-    private Pool _pool;
+    [field: SerializeField] public float Caliber { get; private set; }
 
     public void Stop()
     {
-        _pool.Release(gameObject);
+        _gunParrent.ReleaseInPool(this);
     }
 
-    public void ConnectPool(Pool pool)
+    public void Init(Gun gun)
     {
-        _pool = pool;
+        _gunParrent = gun;
     }
 }

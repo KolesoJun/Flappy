@@ -7,9 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerMoverBroken _moverBroken;
     [SerializeField] private Rigidbody2D _rigidbody;
 
-    public bool IsBroken { get; private set; }
-    
     private PlayerInteract _interact;
+
+    public bool IsBroken { get; private set; }
 
     private void Awake()
     {
@@ -51,7 +51,6 @@ public class Player : MonoBehaviour
 
     private void Death()
     {
-        Debug.Log("gg");
         Time.timeScale = 0f;
     }
 }

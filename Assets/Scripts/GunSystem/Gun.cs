@@ -3,63 +3,59 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    [SerializeField] private Vector2 _direction;
-    [SerializeField] private PoolProjectile _pool;
-    [SerializeField] private CarrierGun _carrier;
+    [SerializeField] private Projectile _prefab;
+    [SerializeField] private float _speedAttact = 1f;
 
+    private Pool<Projectile> _poolAmmo;
     private Coroutine _coroutine;
-    private float _cooldown = 1f;
     private bool _isWork;
 
-    private void OnEnable()
+    private void Awake()
     {
-        _carrier.FiredSingle += Shot;
-        _carrier.FiredBurst += StartFireBurst;
-        _carrier.StopedFire += StopShoot;
+        _poolAmmo = new Pool<Projectile>(_prefab);
     }
 
-    private void OnDisable()
+    public void Shot(Vector2 muzzle)
     {
-        _carrier.FiredSingle -= Shot;
-        _carrier.FiredBurst -= StartFireBurst;
-        _carrier.StopedFire -= StopShoot;
-    }
-
-    private void Shot()
-    {
-        Projectile projectile = _pool.Get().GetComponent<Projectile>();
+        Projectile projectile = _poolAmmo.Get();
 
         if (projectile != null)
         {
+            projectile.Init(this);
             projectile.transform.position = transform.position;
-            projectile.GetComponent<Rigidbody2D>().velocity = _carrier.transform.right * projectile.Caliber * _direction;
+            projectile.GetComponent<Rigidbody2D>().velocity = muzzle * projectile.Caliber;
         }
     }
 
-    private void StartFireBurst()
+    public void StartFireBurst(Vector2 muzzleDirection)
     {
         StopShoot();
-        _coroutine = StartCoroutine(FireBurst());
+        _coroutine = StartCoroutine(FireBurst(muzzleDirection));
     }
 
-    private IEnumerator FireBurst()
-    {
-        WaitForSeconds wait = new WaitForSeconds(_cooldown);
-        _isWork = true;
-        
-        while (_isWork)
-        {
-            Shot();
-
-            yield return wait;
-        }
-    }
-
-    private void StopShoot()
+    public void StopShoot()
     {
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
         _isWork = false;
+    }
+
+    public void ReleaseInPool(Projectile projectile)
+    {
+        _poolAmmo.Release(projectile);
+    }
+
+    private IEnumerator FireBurst(Vector2 muzzleDirection)
+    {
+        WaitForSeconds wait = new WaitForSeconds(_speedAttact);
+        _isWork = true;
+
+        while (_isWork)
+        {
+            Shot(muzzleDirection);
+
+            yield return wait;
+        }
     }
 }
